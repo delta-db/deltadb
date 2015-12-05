@@ -1,0 +1,68 @@
+{
+  "name": "deltadb",
+  "version": "0.0.1",
+  "description": "DeltaDB offline-first database",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/delta-db/deltadb"
+  },
+  "keywords": [
+    "deltadb",
+    "offline-first",
+    "database",
+    "javascript",
+    "js"
+  ],
+  "author": "Geoffrey Cox",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/delta-db/deltadb/issues"
+  },
+  "scripts": {
+    "assert-beautified": "beautify-proj -i test -c beautify.json -e bundle.js && beautify-proj -i scripts -c beautify.json",
+    "beautify": "beautify-proj -i test -o . -c beautify.json -e bundle.js && beautify-proj -i scripts -o . -c beautify.json",
+    "jshint": "jshint -c .jshintrc *.js test scripts",
+    "node-test": "istanbul test --dir coverage/node ./node_modules/mocha/bin/_mocha test/node/index.js",
+    "node-full-test": "npm run jshint && npm run node-test --coverage",
+    "browser-server": "./test/browser/server.js",
+    "browser-test": "./test/browser/test.js",
+    "browser-test-firefox": "npm run jshint && CLIENT=selenium:firefox npm run browser-test",
+    "browser-test-chrome": "npm run jshint && CLIENT=selenium:chrome npm run browser-test",
+    "browser-test-phantomjs": "npm run jshint && CLIENT=selenium:phantomjs npm run browser-test",
+    "browser-coverage-build": "browserify -t [ browserify-istanbul --ignore **/node_modules/** ] ./test/browser/index.js -o test/browser-coverage/bundle.js -d",
+    "browser-coverage-server": "./test/browser-coverage/server.js",
+    "browser-coverage-test": "./test/browser-coverage/test.js",
+    "browser-coverage-report": "istanbul report --dir coverage/browser --root coverage/browser lcov",
+    "browser-coverage-check": "istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100 coverage/browser/coverage.json",
+    "browser-coverage-full-test": "npm run jshint && npm run browser-coverage-build && npm run browser-coverage-test && npm run browser-coverage-report && npm run browser-coverage-check",
+    "test": "npm run assert-beautified && npm run node-full-test && npm run browser-coverage-full-test"
+  },
+  "dependencies": {
+    "bluebird": "^3.0.5",
+    "deltadb-common-utils": "0.0.1",
+    "deltadb-orm-nosql": "0.0.1",
+    "events": "^1.1.0",
+    "inherits": "^2.0.1"
+  },
+  "devDependencies": {
+    "beautify-proj": "0.0.4",
+    "browserify": "^12.0.1",
+    "browserify-istanbul": "^0.2.1",
+    "chai": "^3.4.1",
+    "chai-as-promised": "^5.1.0",
+    "coveralls": "^2.11.4",
+    "es5-shim": "^4.3.1",
+    "http-server": "^0.8.5",
+    "istanbul": "^0.4.0",
+    "jshint": "^2.8.0",
+    "mocha": "^2.3.4",
+    "mocha-phantomjs": "^4.0.1",
+    "request": "^2.67.0",
+    "sauce-connect-launcher": "^0.13.0",
+    "saucelabs": "^1.0.1",
+    "selenium-standalone": "^4.7.2",
+    "watchify": "^3.6.1",
+    "wd": "^0.4.0"
+  }
+}

@@ -1,0 +1,49 @@
+language: node_js
+
+node_js:
+  - "0.12"
+
+script: npm run $COMMAND
+
+after_script: cat ./coverage/node/lcov.info ./coverage/browser/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+
+after_failure:
+- cat /home/travis/build/delta-db/deltadb/npm-debug.log
+
+env:
+  matrix:
+  - COMMAND=assert-beautified
+  - COMMAND=node-full-test
+  - COMMAND=browser-coverage-full-test
+
+  # Saucelabs tests
+  - CLIENT="saucelabs:firefox" COMMAND=browser-test
+  - CLIENT="saucelabs:firefox:34" COMMAND=browser-test
+  - CLIENT="saucelabs:chrome" COMMAND=browser-test
+  - CLIENT="saucelabs:internet explorer" COMMAND=browser-test
+  - CLIENT="saucelabs:internet explorer:10" COMMAND=browser-test
+  - CLIENT="saucelabs:internet explorer:9" NOINDEXEDDB=true COMMAND=browser-test
+  - CLIENT="saucelabs:microsoftedge" COMMAND=browser-test
+  - CLIENT="saucelabs:safari:9" COMMAND=browser-test
+  - CLIENT="saucelabs:safari:8" COMMAND=browser-test
+  - CLIENT="saucelabs:safari:7" COMMAND=browser-test
+  - CLIENT="saucelabs:iphone:7.1" COMMAND=browser-test
+  - CLIENT="saucelabs:iphone:8.4" COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.1" NOINDEXEDDB=true COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.2" NOINDEXEDDB=true COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.3" NOINDEXEDDB=true COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.4" COMMAND=browser-test
+  - CLIENT="saucelabs:android:5.1" COMMAND=browser-test
+
+  # NOTE: there is currently no construct that allows us to encrypt the SAUCE_USERNAME and
+  # SAUCE_ACCESS_KEY while also allowing saucelabs testing in forked projects. See
+  # https://github.com/travis-ci/travis-ci/issues/1946 and
+  # https://github.com/angular/angular.js/issues/5596 for more information.
+  global:
+    - SAUCE_USERNAME=deltadb-user
+    - SAUCE_ACCESS_KEY=f74addf5-f68b-4607-8005-6a1de33a3228
+
+branches:
+  only:
+  - master
+  - /^pull*$/

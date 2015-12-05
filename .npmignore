@@ -1,0 +1,8 @@
+.git*
+bower_components
+coverage
+dist
+node_modules
+.DS_Store
+*~
+npm-debug.log

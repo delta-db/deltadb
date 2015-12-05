@@ -1,0 +1,46 @@
+<html>
+
+<head>
+  <script src="../../dist/deltadb.js"></script>
+</head>
+
+<body>
+
+<h1>
+  DeltaDB is <input id="thing-in" type="text" onkeypress="onKeyPress(event)" />
+</h1>
+
+<h3>
+  DeltaDB is <em id="thing-out"></em>
+</h3>
+
+<script>
+  var db = new DeltaDB('things-db', 'http://localhost:8080');
+
+  var things = db.col('things');
+
+  // We use a predefined id of "thing-id" so that everyone references the same doc
+  var thing = things.doc({ $id: 'thing-id' });
+
+  // Display any locally stored value after it is loaded
+  thing.on('load', function () {
+    document.getElementById('thing-out').innerHTML = thing.get('text');
+  });
+
+  // Display any updates
+  thing.on('attr:update', function (attr) {
+    document.getElementById('thing-out').innerHTML = attr.value;
+  });
+
+  // Save after enter is pressed
+  function onKeyPress(e) {
+    if (e.keyCode === 13) { // pressed enter?
+      thing.set({ text: document.getElementById('thing-in').value }); // save change
+      document.getElementById('thing-in').value = ''; // clear input box
+    }
+  }
+</script>
+
+</body>
+
+</html>
