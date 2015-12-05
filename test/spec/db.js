@@ -285,4 +285,15 @@ describe('db', function () {
     return db.removeRole('user-uuid', 'my-role');
   });
 
+  it('should create database', function () {
+    createClientAndDB();
+    // Assume success if there is no error
+    return db._createDatabase('my-other-db');
+  });
+
+  it('should destroy database', function () {
+    createClientAndDB();
+    // Assume success if there is no error
+    return db._destroyDatabase('my-other-db');
+  });
 });
