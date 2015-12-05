@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "bluebird": "^3.0.5",
-    "deltadb-common-utils": "0.0.1",
+    "deltadb-common-utils": "0.0.2",
     "deltadb-orm-nosql": "0.0.1",
     "events": "^1.1.0",
     "inherits": "^2.0.1"
