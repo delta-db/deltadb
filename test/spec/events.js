@@ -175,7 +175,8 @@ describe('events', function () {
 
   var attrShouldCreateRemoteEarlier = function (emitter) {
     return commonUtils.doAndOnce(createLocal, emitter, 'attr:create').then(function () {
-      return commonTestUtils.shouldDoAndNotOnce(createRemoteEarlier, emitter, 'attr:create');
+      return commonTestUtils.shouldDoAndNotOnce(createRemoteEarlier, emitter,
+        'attr:create');
     });
   };
 
@@ -600,10 +601,11 @@ describe('events', function () {
   };
 
   var colShouldCreateLocal = function (emitter) {
-    return commonTestUtils.shouldDoAndOnce(colCreateLocal, emitter, 'col:create').then(function (
-      args) {
-      colCreateShouldEql(args);
-    });
+    return commonTestUtils.shouldDoAndOnce(colCreateLocal, emitter, 'col:create').then(
+      function (
+        args) {
+        colCreateShouldEql(args);
+      });
   };
 
   // Note: no col:create at col layer as col:create emitted immediately after db.col()
@@ -630,10 +632,11 @@ describe('events', function () {
   };
 
   var colShouldCreateRemote = function (emitter) {
-    return commonTestUtils.shouldDoAndOnce(colCreateRemote, emitter, 'col:create').then(function (
-      args) {
-      return args[0].get('2');
-    }).then(function (doc) {
+    return commonTestUtils.shouldDoAndOnce(colCreateRemote, emitter, 'col:create').then(
+      function (
+        args) {
+        return args[0].get('2');
+      }).then(function (doc) {
       var obj = doc.get();
       obj.thing.should.eql('sing');
     });

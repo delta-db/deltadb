@@ -1,7 +1,6 @@
 'use strict';
 
-var Promise = require('bluebird'),
-  utils = require('deltadb-common-utils');
+var utils = require('deltadb-common-utils');
 
 var Utils = function () {};
 

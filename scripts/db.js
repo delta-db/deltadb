@@ -310,7 +310,7 @@ DB.prototype._resolveAfterRoleCreated = function (userUUID, roleName, originatin
       var data = doc.get();
       // The same user-role mapping could have been created before so we need to check the timestamp
 
-      // TODO: test!
+      // TODO: test
       /* istanbul ignore next */
       if (data[clientUtils.ATTR_NAME_ROLE] &&
         data[clientUtils.ATTR_NAME_ROLE].action === clientUtils.ACTION_ADD &&
@@ -353,7 +353,7 @@ DB.prototype._resolveAfterRoleDestroyed = function (userUUID, roleName, originat
       // The same user-role mapping could have been destroyed before so we need to check the
       // timestamp
 
-      // TODO: test!
+      // TODO: test
       /* istanbul ignore next */
       if (data[clientUtils.ATTR_NAME_ROLE] &&
         data[clientUtils.ATTR_NAME_ROLE].action === clientUtils.ACTION_REMOVE &&

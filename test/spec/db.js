@@ -5,18 +5,33 @@ var DB = require('../../scripts/db'),
   Client = require('../../scripts/adapter'),
   commonUtils = require('deltadb-common-utils'),
   commonTestUtils = require('deltadb-common-utils/scripts/test-utils'),
-  utils = require('../../scripts/utils'),
+  clientUtils = require('../../scripts/utils'),
   Promise = require('bluebird');
 
 describe('db', function () {
 
-  var db = null;
+  var db = null,
+    client = null;
 
   afterEach(function () {
     if (db) {
       return db.destroy(true);
     }
   });
+
+  var createClientAndDB = function (opts) {
+    client = new Client(true);
+
+    var allOpts = {
+      db: 'mydb'
+    };
+
+    if (opts) {
+      allOpts = commonUtils.merge(allOpts, opts);
+    }
+
+    db = client.db(allOpts);
+  };
 
   it('should reload properties', function () {
     var store = new MemAdapter();
@@ -57,11 +72,8 @@ describe('db', function () {
   });
 
   it('should throw delta errors', function () {
-    var client = new Client(true);
-    db = client.db({
-      db: 'mydb',
-      store: new MemAdapter().db('mydb')
-    });
+    createClientAndDB();
+
     return commonTestUtils.shouldNonPromiseThrow(function () {
       db._onDeltaError(new Error('my err'));
     }, new Error('my err'));
@@ -70,13 +82,9 @@ describe('db', function () {
   it('should find and emit when no changes', function () {
     // It is very hard to reliably guarantee the following race condition using e2e testing so we
     // test here
-    var emitted = false,
-      client = new Client(true);
+    var emitted = false;
 
-    db = client.db({
-      db: 'mydb',
-      store: new MemAdapter().db('mydb')
-    });
+    createClientAndDB();
 
     db._connected = true; // fake
 
@@ -96,13 +104,9 @@ describe('db', function () {
   it('should find and emit when not connected', function () {
     // It is very hard to reliably guarantee the following race condition using e2e testing so we
     // test here
-    var emitted = false,
-      client = new Client(true);
+    var emitted = false;
 
-    db = client.db({
-      db: 'mydb',
-      store: new MemAdapter().db('mydb')
-    });
+    createClientAndDB();
 
     db._connected = false; // fake
 
@@ -122,9 +126,7 @@ describe('db', function () {
   });
 
   it('should build init msg with filters turned off', function () {
-    var client = new Client(true);
-    var db = client.db({
-      db: 'mydb',
+    createClientAndDB({
       filter: false
     });
     return commonUtils.once(db, 'load').then(function () {
@@ -134,11 +136,8 @@ describe('db', function () {
   });
 
   it('should limit local changes within collection', function () {
-    var client = new Client(true);
 
-    var db = client.db({
-      db: 'mydb'
-    });
+    createClientAndDB();
 
     var tasks = db.col('tasks');
 
@@ -163,14 +162,11 @@ describe('db', function () {
   });
 
   it('should limit local changes across collections', function () {
-    var client = new Client(true),
-      promises = [],
+    var promises = [],
       limit = 1,
       n = 0;
 
-    var db = client.db({
-      db: 'mydb'
-    });
+    createClientAndDB();
 
     var tasks = db.col('tasks');
     var users = db.col('users');
@@ -193,13 +189,9 @@ describe('db', function () {
 
   it('should find and emit changes in batches', function () {
     var timesEmitted = 0,
-      client = new Client(true),
       promises = [];
 
-    db = client.db({
-      db: 'mydb',
-      store: new MemAdapter().db('mydb')
-    });
+    createClientAndDB();
 
     db._batchSize = 3;
 
@@ -223,6 +215,74 @@ describe('db', function () {
       // ceil(10/3) = 4
       timesEmitted.should.eql(4);
     });
+  });
+
+  it('should add role', function () {
+    createClientAndDB();
+
+    var mockDocs = function (doc) {
+      var nowStr = (new Date()).toISOString();
+
+      var changes = [{
+        id: doc.id(),
+        col: doc._col._name,
+        name: clientUtils.ATTR_NAME_ROLE,
+        val: JSON.stringify({
+          action: clientUtils.ACTION_ADD,
+          userUUID: 'user-uuid',
+          roleName: 'my-role'
+        }),
+        up: nowStr,
+        re: nowStr
+      }];
+
+      db._setChanges(changes);
+    };
+
+    // Mock recording of docs
+    db._resolveAfterRoleCreated = function (userUUID, roleName, doc) {
+      return Promise.all([
+        DB.prototype._resolveAfterRoleCreated.apply(this, arguments),
+        mockDocs(doc) // mock docs after listener binds
+      ]);
+    };
+
+    // Assume success if there is no error
+    return db.addRole('user-uuid', 'my-role');
+  });
+
+  it('should remove role', function () {
+    createClientAndDB();
+
+    var mockDocs = function (doc) {
+      var nowStr = (new Date()).toISOString();
+
+      var changes = [ {
+        id: doc.id(),
+        col: doc._col._name,
+        name: clientUtils.ATTR_NAME_ROLE,
+        val: JSON.stringify({
+          action: clientUtils.ACTION_REMOVE,
+          userUUID: 'user-uuid',
+          roleName: 'my-role'
+        }),
+        up: nowStr,
+        re: nowStr
+      } ];
+
+      db._setChanges(changes);
+    };
+
+    // Mock recording of docs
+    db._resolveAfterRoleDestroyed = function (userUUID, roleName, doc) {
+      return Promise.all([
+        DB.prototype._resolveAfterRoleDestroyed.apply(this, arguments),
+        mockDocs(doc) // mock docs after listener binds
+      ]);
+    };
+
+    // Assume success if there is no error
+    return db.removeRole('user-uuid', 'my-role');
   });
 
 });
