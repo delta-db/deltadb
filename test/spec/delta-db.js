@@ -1,7 +1,7 @@
 'use strict';
 
-var DeltaDB = require('../../../scripts/client/delta-db'),
-  MemAdapter = require('../../../scripts/orm/nosql/adapters/mem');
+var DeltaDB = require('../../scripts/delta-db'),
+  MemAdapter = require('deltadb-orm-nosql/scripts/adapters/mem');
 
 describe('delta-db', function () {
 

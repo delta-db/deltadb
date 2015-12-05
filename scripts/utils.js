@@ -1,55 +1,11 @@
 'use strict';
 
-// TODO: move all code needed by client from ../utils to client/utils
-
 var Promise = require('bluebird'),
-  bcrypt = require('bcryptjs');
+  utils = require('deltadb-common-utils');
 
-var Utils = function () {
-  this._bcrypt = bcrypt; // only for unit testing
-};
+var Utils = function () {};
 
 Utils.prototype.STATUS_ENABLED = 'enabled'; // Also set here so that client doesn't need Users
-
-Utils.prototype.hash = function (password, salt) {
-  var self = this;
-  return new Promise(function (resolve, reject) {
-    self._bcrypt.hash(password, salt, function (err, hash) {
-      if (err) {
-        reject(err);
-      }
-      resolve(hash);
-    });
-  });
-};
-
-Utils.prototype.genSalt = function () {
-  var self = this;
-  return new Promise(function (resolve, reject) {
-    self._bcrypt.genSalt(10, function (err, salt) {
-      if (err) {
-        reject(err);
-      }
-      resolve(salt);
-    });
-  });
-};
-
-Utils.prototype.hashPassword = function (password, salt) {
-  return this.hash(password, salt).then(function (hash) {
-    return {
-      salt: salt,
-      hash: hash
-    };
-  });
-};
-
-Utils.prototype.genSaltAndHashPassword = function (password) {
-  var self = this;
-  return self.genSalt(10).then(function (salt) {
-    return self.hashPassword(password, salt);
-  });
-};
 
 Utils.prototype.genUser = function (userUUID, username, password, status) {
   // Include uuid in user so that can retrieve userUUIDs using deltas
@@ -58,7 +14,7 @@ Utils.prototype.genUser = function (userUUID, username, password, status) {
     username: username,
     status: status ? status : this.STATUS_ENABLED
   };
-  return this.genSaltAndHashPassword(password).then(function (saltAndPwd) {
+  return utils.genSaltAndHashPassword(password).then(function (saltAndPwd) {
     user.salt = saltAndPwd.salt;
     user.password = saltAndPwd.hash;
     return user;
@@ -88,30 +44,6 @@ Utils.prototype.COL_NAME_ALL = '$all';
 Utils.prototype.ATTR_NAME_ROLE = '$role';
 Utils.prototype.ATTR_NAME_ROLE_USER = '$ruser';
 Utils.prototype.ATTR_NAME_ACTION = '$action';
-
-Utils.prototype.timeout = function (ms) {
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      resolve();
-    }, ms);
-  });
-};
-
-// Executes promise and then resolves after event emitted once
-Utils.prototype.doAndOnce = function (promise, emitter, evnt) {
-  var once = this.once(emitter, evnt);
-  return promise().then(function () {
-    return once;
-  });
-};
-
-Utils.prototype.once = function (emitter, evnt) {
-  return new Promise(function (resolve) {
-    emitter.once(evnt, function () {
-      resolve(arguments);
-    });
-  });
-};
 
 Utils.prototype.escapeDBName = function (dbName) {
   // Allow hyphens, but convert to underscores in case DB doesn't support hyphens

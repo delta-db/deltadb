@@ -1,9 +1,9 @@
 'use strict';
 
-var Client = require('../../../scripts/client/adapter'),
-  Doc = require('../../../scripts/client/doc'),
-  MemAdapter = require('../../../scripts/orm/nosql/adapters/mem'),
-  utils = require('../../../scripts/utils');
+var Client = require('../../scripts/adapter'),
+  Doc = require('../../scripts/doc'),
+  MemAdapter = require('deltadb-orm-nosql/scripts/adapters/mem'),
+  utils = require('deltadb-common-utils');
 
 describe('doc', function () {
 

@@ -2,20 +2,20 @@
 
 // TODO: later, db should be passed in a constructor so that it doesn't have to be passed to sync??
 
-// TODO: move some events to nosql/common layer?
+// TODO: move events to deltadb-orm-nosql layer?
 
 // TODO: separate out socket.io code?
 
 var inherits = require('inherits'),
   Promise = require('bluebird'),
-  utils = require('../utils'),
-  MemDB = require('../orm/nosql/adapters/mem/db'),
+  utils = require('deltadb-common-utils'),
+  MemDB = require('deltadb-orm-nosql/scripts/adapters/mem/db'),
   Doc = require('./doc'),
   Collection = require('./collection'),
   clientUtils = require('./utils'),
   io = require('socket.io-client'),
   Sender = require('./sender'),
-  log = require('../client/log'),
+  log = require('./log'),
   config = require('./config');
 
 // TODO: shouldn't password be a char array?
