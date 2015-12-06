@@ -1,15 +1,3 @@
 'use strict';
 
-var chai = require('chai');
-chai.use(require('chai-as-promised'));
-chai.should();
-
-var utils = require('../utils');
-
-describe('browser', function () {
-
-  setTimeout(utils.TIMEOUT);
-
-  require('../spec');
-
-});
+require('../node');

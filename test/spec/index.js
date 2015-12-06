@@ -1,6 +1,11 @@
 'use strict';
 
-describe('client', function () {
+var utils = require('../utils');
+
+describe('spec', function () {
+
+  this.timeout(utils.TIMEOUT);
+
   require('./adapter');
   require('./client');
   require('./db');
