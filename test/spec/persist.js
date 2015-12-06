@@ -23,7 +23,9 @@ describe('persist', function () {
   });
 
   afterEach(function () {
-    return Promise.all([db.destroy(true), db2 ? db2.destroy(true) : null]);
+    // In these tests db and db2 reference the same underlying DB so we do not need to destroy db2.
+    // Otherwise, the destroy would block.
+    return db.destroy(true);
   });
 
   it('should restore from store', function () {
