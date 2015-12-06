@@ -24,7 +24,7 @@ var DB = function (name, adapter, url, localOnly, noFilters, username, password,
 
   MemDB.apply(this, arguments); // apply parent constructor
 
-  this._socket = new Socket();
+  this._socket = new DB._SocketClass();
 
   this._batchSize = DB.DEFAULT_BATCH_SIZE;
   this._cols = {};
@@ -56,6 +56,9 @@ var DB = function (name, adapter, url, localOnly, noFilters, username, password,
 };
 
 inherits(DB, MemDB);
+
+// Used for mocking the socket
+DB._SocketClass = Socket;
 
 DB.PROPS_COL_NAME = '$props';
 
@@ -588,8 +591,6 @@ DB.prototype._init = function () {
   this._connected = true;
   this._emitInit();
 };
-
-
 
 DB.prototype._connect = function () {
   var self = this;

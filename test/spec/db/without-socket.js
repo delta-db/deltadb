@@ -1,14 +1,14 @@
 'use strict';
 
-var DB = require('../../scripts/db'),
+var DB = require('../../../scripts/db'),
   MemAdapter = require('deltadb-orm-nosql/scripts/adapters/mem'),
-  Client = require('../../scripts/adapter'),
+  Client = require('../../../scripts/adapter'),
   commonUtils = require('deltadb-common-utils'),
   commonTestUtils = require('deltadb-common-utils/scripts/test-utils'),
-  clientUtils = require('../../scripts/utils'),
+  clientUtils = require('../../../scripts/utils'),
   Promise = require('bluebird');
 
-describe('db', function () {
+describe('without-socket', function () {
 
   var db = null,
     client = null;
@@ -257,7 +257,7 @@ describe('db', function () {
     var mockDocs = function (doc) {
       var nowStr = (new Date()).toISOString();
 
-      var changes = [ {
+      var changes = [{
         id: doc.id(),
         col: doc._col._name,
         name: clientUtils.ATTR_NAME_ROLE,
@@ -268,7 +268,7 @@ describe('db', function () {
         }),
         up: nowStr,
         re: nowStr
-      } ];
+      }];
 
       db._setChanges(changes);
     };
