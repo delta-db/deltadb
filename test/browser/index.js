@@ -2,15 +2,14 @@
 
 var chai = require('chai');
 chai.use(require('chai-as-promised'));
-chai.should(); // var should = chai.should();
+chai.should();
 
 var utils = require('../utils');
 
 describe('browser', function () {
 
-  this.timeout(utils.TIMEOUT_MS);
+  setTimeout(utils.TIMEOUT);
 
   require('../spec');
-  require('../spec/adapters/browser');
 
 });
