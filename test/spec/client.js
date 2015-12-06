@@ -1510,9 +1510,7 @@ describe('client', function () {
 
   });
 
-  // TODO: create db & collection layer tests and move this test accordingly
-  it('should create user', function () {
-
+  var createUser = function () {
     var savedDoc = null;
 
     return db.createUser('user-uuid', 'username', 'secret').then(function (doc) {
@@ -1524,14 +1522,20 @@ describe('client', function () {
         doc.should.eql(savedDoc);
       });
     });
+  };
 
+  // TODO: create db & collection layer tests and move this test accordingly
+  it('should create user', function () {
+    return createUser();
   });
 
   it('should update user', function () {
 
     var savedDoc = null;
 
-    return db.updateUser('user-uuid', 'username', 'secret').then(function (doc) {
+    return createUser().then(function () {
+      return db.updateUser('user-uuid', 'username', 'secret');
+    }).then(function (doc) {
       savedDoc = doc;
       var col = db.col(Doc._userName);
       return col.all(function (doc) {
