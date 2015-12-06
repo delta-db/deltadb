@@ -22,16 +22,16 @@ env:
   - CLIENT="saucelabs:chrome" COMMAND=browser-test
   - CLIENT="saucelabs:internet explorer" COMMAND=browser-test
   - CLIENT="saucelabs:internet explorer:10" COMMAND=browser-test
-  - CLIENT="saucelabs:internet explorer:9" NOINDEXEDDB=true COMMAND=browser-test
+  - CLIENT="saucelabs:internet explorer:9" COMMAND=browser-test
   - CLIENT="saucelabs:microsoftedge" COMMAND=browser-test
   - CLIENT="saucelabs:safari:9" COMMAND=browser-test
   - CLIENT="saucelabs:safari:8" COMMAND=browser-test
   - CLIENT="saucelabs:safari:7" COMMAND=browser-test
   - CLIENT="saucelabs:iphone:7.1" COMMAND=browser-test
   - CLIENT="saucelabs:iphone:8.4" COMMAND=browser-test
-  - CLIENT="saucelabs:android:4.1" NOINDEXEDDB=true COMMAND=browser-test
-  - CLIENT="saucelabs:android:4.2" NOINDEXEDDB=true COMMAND=browser-test
-  - CLIENT="saucelabs:android:4.3" NOINDEXEDDB=true COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.1" COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.2" COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.3" COMMAND=browser-test
   - CLIENT="saucelabs:android:4.4" COMMAND=browser-test
   - CLIENT="saucelabs:android:5.1" COMMAND=browser-test
 
