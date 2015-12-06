@@ -1,23 +1,37 @@
 'use strict';
 
-var DB = require('../../../scripts/client/db'),
-  MemAdapter = require('../../../scripts/orm/nosql/adapters/mem'),
-  Client = require('../../../scripts/client/adapter'),
-  clientUtils = require('../../../scripts/client/utils'),
-  commonUtils = require('../../common-utils'),
-  utils = require('../../../scripts/utils'),
-  MemAdapter = require('../../../scripts/orm/nosql/adapters/mem'),
+var DB = require('../../../scripts/db'),
+  MemAdapter = require('deltadb-orm-nosql/scripts/adapters/mem'),
+  Client = require('../../../scripts/adapter'),
+  commonUtils = require('deltadb-common-utils'),
+  commonTestUtils = require('deltadb-common-utils/scripts/test-utils'),
+  clientUtils = require('../../../scripts/utils'),
   Promise = require('bluebird');
 
-describe('db', function () {
+describe('without-socket', function () {
 
-  var db = null;
+  var db = null,
+    client = null;
 
   afterEach(function () {
     if (db) {
       return db.destroy(true);
     }
   });
+
+  var createClientAndDB = function (opts) {
+    client = new Client(true);
+
+    var allOpts = {
+      db: 'mydb'
+    };
+
+    if (opts) {
+      allOpts = commonUtils.merge(allOpts, opts);
+    }
+
+    db = client.db(allOpts);
+  };
 
   it('should reload properties', function () {
     var store = new MemAdapter();
@@ -48,22 +62,19 @@ describe('db', function () {
 
     // Wait for load after next tick to ensure there is no race condition. The following code was
     // failing when the DB store loading was triggered at the adapter layer.
-    return clientUtils.timeout().then(function () {
+    return commonUtils.timeout().then(function () {
       db = client.db({
         db: 'mydb',
         store: new MemAdapter().db('mydb')
       });
-      return clientUtils.once(db, 'load');
+      return commonUtils.once(db, 'load');
     });
   });
 
   it('should throw delta errors', function () {
-    var client = new Client(true);
-    db = client.db({
-      db: 'mydb',
-      store: new MemAdapter().db('mydb')
-    });
-    return commonUtils.shouldNonPromiseThrow(function () {
+    createClientAndDB();
+
+    return commonTestUtils.shouldNonPromiseThrow(function () {
       db._onDeltaError(new Error('my err'));
     }, new Error('my err'));
   });
@@ -71,19 +82,15 @@ describe('db', function () {
   it('should find and emit when no changes', function () {
     // It is very hard to reliably guarantee the following race condition using e2e testing so we
     // test here
-    var emitted = false,
-      client = new Client(true);
+    var emitted = false;
 
-    db = client.db({
-      db: 'mydb',
-      store: new MemAdapter().db('mydb')
-    });
+    createClientAndDB();
 
     db._connected = true; // fake
 
-    db._ready = utils.resolveFactory(); // fake
+    db._ready = commonUtils.resolveFactory(); // fake
 
-    db._localChanges = utils.resolveFactory([]); // fake
+    db._localChanges = commonUtils.resolveFactory([]); // fake
 
     db._emitChanges = function () {
       emitted = true;
@@ -97,19 +104,15 @@ describe('db', function () {
   it('should find and emit when not connected', function () {
     // It is very hard to reliably guarantee the following race condition using e2e testing so we
     // test here
-    var emitted = false,
-      client = new Client(true);
+    var emitted = false;
 
-    db = client.db({
-      db: 'mydb',
-      store: new MemAdapter().db('mydb')
-    });
+    createClientAndDB();
 
     db._connected = false; // fake
 
-    db._ready = utils.resolveFactory(); // fake
+    db._ready = commonUtils.resolveFactory(); // fake
 
-    db._localChanges = utils.resolveFactory([{
+    db._localChanges = commonUtils.resolveFactory([{
       foo: 'bar'
     }]); // fake
 
@@ -123,23 +126,18 @@ describe('db', function () {
   });
 
   it('should build init msg with filters turned off', function () {
-    var client = new Client(true);
-    var db = client.db({
-      db: 'mydb',
+    createClientAndDB({
       filter: false
     });
-    return clientUtils.once(db, 'load').then(function () {
+    return commonUtils.once(db, 'load').then(function () {
       var msg = db._emitInitMsg();
       msg.filter.should.eql(false);
     });
   });
 
   it('should limit local changes within collection', function () {
-    var client = new Client(true);
 
-    var db = client.db({
-      db: 'mydb'
-    });
+    createClientAndDB();
 
     var tasks = db.col('tasks');
 
@@ -164,14 +162,11 @@ describe('db', function () {
   });
 
   it('should limit local changes across collections', function () {
-    var client = new Client(true),
-      promises = [],
+    var promises = [],
       limit = 1,
       n = 0;
 
-    var db = client.db({
-      db: 'mydb'
-    });
+    createClientAndDB();
 
     var tasks = db.col('tasks');
     var users = db.col('users');
@@ -194,13 +189,9 @@ describe('db', function () {
 
   it('should find and emit changes in batches', function () {
     var timesEmitted = 0,
-      client = new Client(true),
       promises = [];
 
-    db = client.db({
-      db: 'mydb',
-      store: new MemAdapter().db('mydb')
-    });
+    createClientAndDB();
 
     db._batchSize = 3;
 
@@ -226,4 +217,83 @@ describe('db', function () {
     });
   });
 
+  it('should add role', function () {
+    createClientAndDB();
+
+    var mockDocs = function (doc) {
+      var nowStr = (new Date()).toISOString();
+
+      var changes = [{
+        id: doc.id(),
+        col: doc._col._name,
+        name: clientUtils.ATTR_NAME_ROLE,
+        val: JSON.stringify({
+          action: clientUtils.ACTION_ADD,
+          userUUID: 'user-uuid',
+          roleName: 'my-role'
+        }),
+        up: nowStr,
+        re: nowStr
+      }];
+
+      db._setChanges(changes);
+    };
+
+    // Mock recording of docs
+    db._resolveAfterRoleCreated = function (userUUID, roleName, doc) {
+      return Promise.all([
+        DB.prototype._resolveAfterRoleCreated.apply(this, arguments),
+        mockDocs(doc) // mock docs after listener binds
+      ]);
+    };
+
+    // Assume success if there is no error
+    return db.addRole('user-uuid', 'my-role');
+  });
+
+  it('should remove role', function () {
+    createClientAndDB();
+
+    var mockDocs = function (doc) {
+      var nowStr = (new Date()).toISOString();
+
+      var changes = [{
+        id: doc.id(),
+        col: doc._col._name,
+        name: clientUtils.ATTR_NAME_ROLE,
+        val: JSON.stringify({
+          action: clientUtils.ACTION_REMOVE,
+          userUUID: 'user-uuid',
+          roleName: 'my-role'
+        }),
+        up: nowStr,
+        re: nowStr
+      }];
+
+      db._setChanges(changes);
+    };
+
+    // Mock recording of docs
+    db._resolveAfterRoleDestroyed = function (userUUID, roleName, doc) {
+      return Promise.all([
+        DB.prototype._resolveAfterRoleDestroyed.apply(this, arguments),
+        mockDocs(doc) // mock docs after listener binds
+      ]);
+    };
+
+    // Assume success if there is no error
+    return db.removeRole('user-uuid', 'my-role');
+  });
+
+  it('should create database', function () {
+    createClientAndDB();
+    // Assume success if there is no error
+    return db._createDatabase('my-other-db');
+  });
+
+  it('should destroy database', function () {
+    createClientAndDB();
+    // Assume success if there is no error
+    return db._destroyDatabase('my-other-db');
+  });
 });

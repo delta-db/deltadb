@@ -2,21 +2,19 @@
 
 // TODO: later, db should be passed in a constructor so that it doesn't have to be passed to sync??
 
-// TODO: move some events to nosql/common layer?
-
-// TODO: separate out socket.io code?
+// TODO: move events to deltadb-orm-nosql layer?
 
 var inherits = require('inherits'),
   Promise = require('bluebird'),
-  utils = require('../utils'),
-  MemDB = require('../orm/nosql/adapters/mem/db'),
+  utils = require('deltadb-common-utils'),
+  MemDB = require('deltadb-orm-nosql/scripts/adapters/mem/db'),
   Doc = require('./doc'),
   Collection = require('./collection'),
   clientUtils = require('./utils'),
-  io = require('socket.io-client'),
   Sender = require('./sender'),
-  log = require('../client/log'),
-  config = require('./config');
+  log = require('./log'),
+  config = require('./config'),
+  Socket = require('./socket');
 
 // TODO: shouldn't password be a char array?
 var DB = function (name, adapter, url, localOnly, noFilters, username, password, hashedPassword) {
@@ -25,6 +23,8 @@ var DB = function (name, adapter, url, localOnly, noFilters, username, password,
   name = clientUtils.escapeDBName(name);
 
   MemDB.apply(this, arguments); // apply parent constructor
+
+  this._socket = new DB._SocketClass();
 
   this._batchSize = DB.DEFAULT_BATCH_SIZE;
   this._cols = {};
@@ -56,6 +56,9 @@ var DB = function (name, adapter, url, localOnly, noFilters, username, password,
 };
 
 inherits(DB, MemDB);
+
+// Used for mocking the socket
+DB._SocketClass = Socket;
 
 DB.PROPS_COL_NAME = '$props';
 
@@ -310,13 +313,13 @@ DB.prototype._resolveAfterRoleCreated = function (userUUID, roleName, originatin
       var data = doc.get();
       // The same user-role mapping could have been created before so we need to check the timestamp
 
-      // TODO: test!
+      // TODO: test
       /* istanbul ignore next */
       if (data[clientUtils.ATTR_NAME_ROLE] &&
         data[clientUtils.ATTR_NAME_ROLE].action === clientUtils.ACTION_ADD &&
         data[clientUtils.ATTR_NAME_ROLE].userUUID === userUUID &&
         data[clientUtils.ATTR_NAME_ROLE].roleName === roleName &&
-        doc._dat.recordedAt.getTime() >= ts.getTime()) {
+        (!doc._dat.recordedAt || doc._dat.recordedAt.getTime() >= ts.getTime())) {
 
         // Remove listener so that we don't listen for other docs
         originatingDoc._col.removeListener('doc:record', listener);
@@ -353,13 +356,13 @@ DB.prototype._resolveAfterRoleDestroyed = function (userUUID, roleName, originat
       // The same user-role mapping could have been destroyed before so we need to check the
       // timestamp
 
-      // TODO: test!
+      // TODO: test
       /* istanbul ignore next */
       if (data[clientUtils.ATTR_NAME_ROLE] &&
         data[clientUtils.ATTR_NAME_ROLE].action === clientUtils.ACTION_REMOVE &&
         data[clientUtils.ATTR_NAME_ROLE].userUUID === userUUID &&
         data[clientUtils.ATTR_NAME_ROLE].roleName === roleName &&
-        doc._dat.recordedAt.getTime() >= ts.getTime()) {
+        (!doc._dat.recordedAt || doc._dat.recordedAt.getTime() >= ts.getTime())) {
 
         // Remove listener so that we don't listen for other docs
         originatingDoc._col.removeListener('doc:record', listener);
@@ -592,9 +595,7 @@ DB.prototype._init = function () {
 DB.prototype._connect = function () {
   var self = this;
 
-  self._socket = io.connect(self._url, {
-    'force new connection': true
-  }); // same client, multiple connections for testing
+  self._socket.connect(self._url);
 
   self._registerDeltaErrorListener();
 

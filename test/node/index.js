@@ -2,15 +2,6 @@
 
 var chai = require('chai');
 chai.use(require('chai-as-promised'));
-chai.should(); // var should = chai.should();
+chai.should();
 
-var utils = require('../utils');
-
-describe('node', function () {
-
-  this.timeout(utils.TIMEOUT_MS);
-
-  require('../spec');
-  require('../spec/adapters/node');
-
-});
+require('../spec');

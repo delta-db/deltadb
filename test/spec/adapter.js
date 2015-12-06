@@ -1,6 +1,6 @@
 'use strict';
 
-var Client = require('../../../scripts/client/adapter');
+var Client = require('../../scripts/adapter');
 
 describe('adapter', function () {
 

@@ -1,6 +1,6 @@
 'use strict';
 
-var MemAdapter = require('../orm/nosql/adapters/mem/adapter');
+var MemAdapter = require('deltadb-orm-nosql/scripts/adapters/mem');
 
 /**
  * This class provides us with a global way of keeping the store selector abstracted so that we

@@ -2,11 +2,11 @@
 
 var inherits = require('inherits'),
   Promise = require('bluebird'),
-  MemCollection = require('../orm/nosql/adapters/mem/collection'),
-  utils = require('../utils'),
+  MemCollection = require('deltadb-orm-nosql/scripts/adapters/mem/collection'),
+  utils = require('deltadb-common-utils'),
   clientUtils = require('./utils'),
   Doc = require('./doc'),
-  Cursor = require('../orm/nosql/adapters/mem/cursor');
+  Cursor = require('deltadb-orm-nosql/scripts/adapters/mem/cursor');
 
 var Collection = function ( /* name, db */ ) {
   MemCollection.apply(this, arguments); // apply parent constructor

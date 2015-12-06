@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('./utils');
+var commonUtils = require('deltadb-common-utils');
 
 var Sender = function (db) {
   this._db = db;
@@ -22,11 +22,11 @@ Sender.prototype._sendLoop = function () {
   } else {
 
     // Sleep by 1 ms so that _lastSent is != _requested for the first request
-    return utils.timeout(1).then(function () {
+    return commonUtils.timeout(1).then(function () {
       self._lastSent = new Date();
       return self._doSend();
     }).then(function () {
-      //   return utils.timeout(Sender.SEND_EVERY_MS);
+      //   return commonUtils.timeout(Sender.SEND_EVERY_MS);
       // }).then(function () {
       //   self._sendLoop();
 

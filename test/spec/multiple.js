@@ -1,9 +1,9 @@
 'use strict';
 
-var commonUtils = require('../../common-utils'),
-  Client = require('../../../scripts/client/adapter'),
+var commonTestUtils = require('deltadb-common-utils/scripts/test-utils'),
+  Client = require('../../scripts/adapter'),
   Promise = require('bluebird'),
-  MemAdapter = require('../../../scripts/orm/nosql/adapters/mem');
+  MemAdapter = require('deltadb-orm-nosql/scripts/adapters/mem');
 
 describe('multiple', function () {
 
@@ -51,7 +51,7 @@ describe('multiple', function () {
       return Promise.resolve();
     };
 
-    return commonUtils.shouldDoAndNotOnce(promiseFactory, doc2, 'test-event');
+    return commonTestUtils.shouldDoAndNotOnce(promiseFactory, doc2, 'test-event');
   });
 
 });

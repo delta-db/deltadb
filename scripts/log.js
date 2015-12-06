@@ -1,7 +1,7 @@
 'use strict';
 
 var inherits = require('inherits'),
-  ParentLog = require('../utils/log');
+  ParentLog = require('deltadb-common-utils/scripts/log');
 
 var Log = function () {
   ParentLog.apply(this, arguments);

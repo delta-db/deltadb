@@ -1,7 +1,8 @@
 'use strict';
 
-var clientUtils = require('../../../scripts/client/utils'),
-  commonUtils = require('../../common-utils');
+var clientUtils = require('../../scripts/utils'),
+  commonUtils = require('deltadb-common-utils'),
+  commonTestUtils = require('deltadb-common-utils/scripts/test-utils');
 
 describe('utils', function () {
 
@@ -36,7 +37,7 @@ describe('utils', function () {
 
   it('should sleep', function () {
     var before = new Date();
-    return clientUtils.timeout(1000).then(function () {
+    return commonUtils.timeout(1000).then(function () {
       var after = new Date();
       var elapsed = after.getTime() - before.getTime();
       (elapsed >= 1000 && elapsed < 1200).should.eql(true); // allow for 200 ms window
@@ -44,7 +45,7 @@ describe('utils', function () {
   });
 
   it('should throw when db name is invalid', function () {
-    return commonUtils.shouldNonPromiseThrow(function () {
+    return commonTestUtils.shouldNonPromiseThrow(function () {
       clientUtils.escapeDBName('my^#invalid$ db%name!');
     }, new Error());
   });

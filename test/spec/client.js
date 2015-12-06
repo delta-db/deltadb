@@ -2,11 +2,11 @@
 
 // TODO: split up
 
-var utils = require('../../../scripts/utils'),
-  commonUtils = require('../../common-utils'),
-  Client = require('../../../scripts/client/adapter'),
-  Doc = require('../../../scripts/client/doc'),
-  MemAdapter = require('../../../scripts/orm/nosql/adapters/mem');
+var commonUtils = require('deltadb-common-utils'),
+  testUtils = require('../utils'),
+  Client = require('../../scripts/adapter'),
+  Doc = require('../../scripts/doc'),
+  MemAdapter = require('deltadb-orm-nosql/scripts/adapters/mem');
 
 describe('client', function () {
 
@@ -37,7 +37,7 @@ describe('client', function () {
     return tasks.all(function (doc) {
       var exp = expected[doc.id()];
       (typeof exp !== 'undefined').should.eql(true);
-      utils.each(exp, function (attr) {
+      commonUtils.each(exp, function (attr) {
         if (typeof attr.seq === 'undefined') {
           attr.seq = 0;
         }
@@ -193,7 +193,7 @@ describe('client', function () {
       nextUpdated = null;
     // For some reason, waiting 1 millisecond can still occassionally result in all changes having
     // the same timestamp so we'll bump it to 2 milliseconds
-    return commonUtils.sleep().then(function () { // make sure changes occur at later timestamp
+    return testUtils.sleep().then(function () { // make sure changes occur at later timestamp
       updated = new Date(); // use the same updated date for the next 2 updates
       task1._set('priority', 'low', updated);
       task1._set('priority', 'medium', updated);
@@ -237,7 +237,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.sleep(); // ensure different timestamp for upcoming change
+      return testUtils.sleep(); // ensure different timestamp for upcoming change
     }).then(function () {
       // Make another update at later timestamp and make sure the seq is 0
       nextUpdated = new Date();
@@ -530,7 +530,7 @@ describe('client', function () {
 
   it('should process remote changes', function () {
     return db._setChanges(remoteChanges).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1',
         thing: 'write a song',
         priority: 'low'
@@ -596,7 +596,7 @@ describe('client', function () {
           seq: 0
         }])
       .then(function () {
-        return commonUtils.allShouldEql(tasks, [{
+        return testUtils.allShouldEql(tasks, [{
           $id: '1',
           thing: 'write a song',
           priority: 'high'
@@ -613,7 +613,7 @@ describe('client', function () {
             seq: 0
           }]);
       }).then(function () {
-        return commonUtils.allShouldEql(tasks, [{
+        return testUtils.allShouldEql(tasks, [{
           $id: '1',
           thing: 'write a song',
           priority: 'high'
@@ -706,7 +706,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1',
         thing: 'write a song',
         priority: 'low'
@@ -733,7 +733,7 @@ describe('client', function () {
       re: '2014-01-01T05:30:00.000Z'
     }];
     return db.sync(server).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1',
         thing: 'write a song'
       }]);
@@ -764,7 +764,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.allShouldEql(tasks, []);
+      return testUtils.allShouldEql(tasks, []);
     });
   });
 
@@ -786,7 +786,7 @@ describe('client', function () {
       re: '2014-01-01T05:30:00.000Z'
     }];
     return db.sync(server).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1',
         thing: 'write a song',
         priority: 'high'
@@ -825,7 +825,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1',
         priority: 'high'
       }]);
@@ -1186,7 +1186,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1',
         priority: 'high'
       }]);
@@ -1235,7 +1235,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1',
         priority: 'high'
       }]);
@@ -1295,7 +1295,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.allShouldEql(tasks, []);
+      return testUtils.allShouldEql(tasks, []);
     });
   });
 
@@ -1353,7 +1353,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1'
       }]);
     });
@@ -1412,7 +1412,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1',
         priority: 'low'
       }]);
@@ -1473,7 +1473,7 @@ describe('client', function () {
       };
       return latestShouldEql(latest);
     }).then(function () {
-      return commonUtils.allShouldEql(tasks, [{
+      return testUtils.allShouldEql(tasks, [{
         $id: '1',
         priority: 'low'
       }]);
@@ -1510,9 +1510,7 @@ describe('client', function () {
 
   });
 
-  // TODO: create db & collection layer tests and move this test accordingly
-  it('should create user', function () {
-
+  var createUser = function () {
     var savedDoc = null;
 
     return db.createUser('user-uuid', 'username', 'secret').then(function (doc) {
@@ -1524,14 +1522,20 @@ describe('client', function () {
         doc.should.eql(savedDoc);
       });
     });
+  };
 
+  // TODO: create db & collection layer tests and move this test accordingly
+  it('should create user', function () {
+    return createUser();
   });
 
   it('should update user', function () {
 
     var savedDoc = null;
 
-    return db.updateUser('user-uuid', 'username', 'secret').then(function (doc) {
+    return createUser().then(function () {
+      return db.updateUser('user-uuid', 'username', 'secret');
+    }).then(function (doc) {
       savedDoc = doc;
       var col = db.col(Doc._userName);
       return col.all(function (doc) {

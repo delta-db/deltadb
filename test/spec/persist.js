@@ -1,9 +1,9 @@
 'use strict';
 
-var utils = require('../../../scripts/utils'),
-  Client = require('../../../scripts/client/adapter'),
+var commonUtils = require('deltadb-common-utils'),
+  Client = require('../../scripts/adapter'),
   Promise = require('bluebird'),
-  commonUtils = require('../../common-utils');
+  testUtils = require('../utils');
 
 describe('persist', function () {
 
@@ -18,7 +18,7 @@ describe('persist', function () {
     db = client.db({
       db: 'mydb'
     });
-    propsReady = utils.once(db, 'load');
+    propsReady = commonUtils.once(db, 'load');
     tasks = db.col('tasks');
   });
 
@@ -31,7 +31,7 @@ describe('persist', function () {
     var client2 = null,
       found = false,
       task = tasks.doc(),
-      dbLoaded = utils.once(db, 'load');
+      dbLoaded = commonUtils.once(db, 'load');
 
     var nowStr = (new Date().toISOString());
 
@@ -57,7 +57,7 @@ describe('persist', function () {
       });
 
       // Wait until all the docs have been loaded from the store
-      return utils.once(db2, 'load');
+      return commonUtils.once(db2, 'load');
     }).then(function () {
       // Verify restoration of since
       var props = db2._props.get();
@@ -111,11 +111,11 @@ describe('persist', function () {
     // Populate underlying store
     return task.save().then(function () {
       // Sleep so that timestamps aren't the same and the 2nd set of changes come later
-      return commonUtils.sleep();
+      return testUtils.sleep();
     }).then(function () {
       // Simulate reload using a second client
       setUpClient2();
-      return utils.once(db2, 'load');
+      return commonUtils.once(db2, 'load');
     }).then(function () {
       // Make sure that we take the latest changes
       task2.get().should.eql({
