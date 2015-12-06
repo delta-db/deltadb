@@ -5,7 +5,8 @@ var utils = require('../scripts/utils'),
 
 var Utils = function () {};
 
-Utils.prototype.TIMEOUT = 8000;
+// Long timeout needed for saucelabs tests
+Utils.prototype.TIMEOUT = 20000;
 
 Utils.prototype.changesShouldEql = function (expected, actual) {
   this.sortChanges(actual);
