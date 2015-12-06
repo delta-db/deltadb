@@ -9,5 +9,6 @@ describe('client', function () {
   require('./events');
   require('./multiple');
   require('./persist');
+  require('./socket');
   require('./utils');
 });

@@ -5,10 +5,12 @@ var io = require('socket.io-client');
 /**
  * Abstract the socket interface for testing and the ability to swap out socket libs
  */
-var Socket = function () {};
+var Socket = function () {
+  this._io = io; // for mocking
+};
 
 Socket.prototype.connect = function (url) {
-  this._socket = io.connect(url, {
+  this._socket = this._io.connect(url, {
     'force new connection': true
   }); // same client, multiple connections for testing
 };
