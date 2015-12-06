@@ -2,7 +2,6 @@
 
 var commonUtils = require('deltadb-common-utils'),
   Client = require('../../scripts/adapter'),
-  Promise = require('bluebird'),
   testUtils = require('../utils');
 
 describe('persist', function () {
