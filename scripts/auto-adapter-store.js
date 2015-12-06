@@ -7,6 +7,8 @@ var IDBAdapter = require('deltadb-orm-nosql/scripts/adapters/indexed-db'),
 
 // Create a store based on the availibility of whether we are using a browser or not
 adapterStore.newAdapter = function () {
+  // TODO: test
+  /* istanbul ignore next */
   if (global.window && idbUtils.indexedDB()) { // in browser and have IndexedDB?
     return new IDBAdapter();
   } else {
