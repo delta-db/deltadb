@@ -9,18 +9,6 @@
   <script src="../../node_modules/mocha/mocha.js"></script>
   <script>
     mocha.setup('bdd');
-
-    // Skip IndexedDB tests? Not all browsers support IndexedDB
-    function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-    var noindexeddb = getParameterByName('noindexeddb');
-    if (noindexeddb) {
-      deltaDBORMNoSQLNoIDB = true;
-    }
   </script>
   <script type="text/javascript" src="bundle.js"></script>
 </head>
