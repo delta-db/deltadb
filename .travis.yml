@@ -17,6 +17,12 @@ env:
   - COMMAND=browser-coverage-full-test
 
   # Saucelabs tests
+  #
+  # NOTE: according to http://caniuse.com/#feat=sql-storage, Android 4.1-4.3 should support WebSQL,
+  # but there appears to be some issues when testing with saucelabs. It appears extra configurations
+  # are needed to prevent "SECURITY_ERR: DOM Exception 18" exceptions:
+  # http://stackoverflow.com/questions/16062591. It doesn't appear that these configurations can be
+  # made in the saucelabs environment so we will not run the IndexedDB tests in Android 4.1-4.3.
   - CLIENT="saucelabs:firefox" COMMAND=browser-test
   - CLIENT="saucelabs:firefox:34" COMMAND=browser-test
   - CLIENT="saucelabs:chrome" COMMAND=browser-test
@@ -29,9 +35,9 @@ env:
   - CLIENT="saucelabs:safari:7" COMMAND=browser-test
   - CLIENT="saucelabs:iphone:7.1" COMMAND=browser-test
   - CLIENT="saucelabs:iphone:8.4" COMMAND=browser-test
-  - CLIENT="saucelabs:android:4.1" COMMAND=browser-test
-  - CLIENT="saucelabs:android:4.2" COMMAND=browser-test
-  - CLIENT="saucelabs:android:4.3" COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.1" NOINDEXEDDB=true COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.2" NOINDEXEDDB=true COMMAND=browser-test
+  - CLIENT="saucelabs:android:4.3" NOINDEXEDDB=true COMMAND=browser-test
   - CLIENT="saucelabs:android:4.4" COMMAND=browser-test
   - CLIENT="saucelabs:android:5.1" COMMAND=browser-test
 
