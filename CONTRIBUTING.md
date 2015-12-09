@@ -25,6 +25,12 @@ This requires having david installed globally, which is already handled by our v
 	david update
 
 
+Building
+---
+
+	npm run build
+
+
 Publishing to npm
 ---
 
