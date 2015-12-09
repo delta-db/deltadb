@@ -11,22 +11,25 @@ var dotfile = './test/browser/.bundle.js';
 var outfile = './test/browser/bundle.js';
 var watchify = require('watchify');
 var browserify = require('browserify');
-var w = watchify(browserify(indexfile, {
+
+// TODO: make this configurable via an env var
+// Watchify appears to occasionally cause "Error: watch ENOSPC" errors in saucelabs so we'll just
+// disable it.
+var useWatchify = false;
+
+var b = browserify(indexfile, {
   cache: {},
   packageCache: {},
   fullPaths: true,
   debug: true
-}));
-
-w.on('update', bundle);
-bundle();
+});
 
 var filesWritten = false;
 var serverStarted = false;
 var readyCallback;
 
 function bundle() {
-  var wb = w.bundle();
+  var wb = (useWatchify ? w.bundle() : b.bundle());
   wb.on('error', function (err) {
     console.error(String(err));
   });
@@ -44,6 +47,13 @@ function bundle() {
     });
   }
 }
+
+if (useWatchify) {
+  var w = watchify(b);
+  w.on('update', bundle);
+}
+
+bundle();
 
 function startServers(callback) {
   readyCallback = callback;
