@@ -36,7 +36,9 @@
     "browser-coverage-report": "istanbul report --dir coverage/browser --root coverage/browser lcov",
     "browser-coverage-check": "istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100 coverage/browser/coverage.json",
     "browser-coverage-full-test": "npm run jshint && npm run browser-coverage-build && npm run browser-coverage-test && npm run browser-coverage-report && npm run browser-coverage-check",
-    "test": "npm run assert-beautified && npm run node-full-test && npm run browser-coverage-full-test"
+    "test": "npm run assert-beautified && npm run node-full-test && npm run browser-coverage-full-test",
+    "min": "uglifyjs dist/deltadb.js -mc > dist/deltadb.min.js",
+    "build": "mkdir -p dist && browserify index.js -s DeltaDB -o dist/deltadb.js && npm run min"
   },
   "dependencies": {
     "bluebird": "^3.0.5",
