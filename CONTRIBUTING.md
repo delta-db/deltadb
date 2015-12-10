@@ -35,9 +35,7 @@ Publishing to npm/bowser
 ---
 
 	tin -v VERSION
-	git add -A
-	git commit -m 'VERSION'
-	git tag vVERSION
+	git diff # check that only version changed
 	npm run publish
 
 
