@@ -118,7 +118,7 @@ describe('doc', function () {
     var change = {
       sent: new Date()
     };
-    var now = (new Date()).getTime() - 1;
+    var now = change.sent.getTime() - 1;
     task._formatChange(0, null, null, change, now);
   });
 
