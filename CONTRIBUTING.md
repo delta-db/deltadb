@@ -31,15 +31,14 @@ Building
 	npm run build
 
 
-Publishing to npm
+Publishing to npm/bowser
 ---
 
 	tin -v VERSION
 	git add -A
 	git commit -m 'VERSION'
 	git tag vVERSION
-	git push origin master --tags
-	npm publish
+	npm run publish
 
 
 Run all local tests
