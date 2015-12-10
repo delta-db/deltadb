@@ -38,7 +38,8 @@
     "browser-coverage-full-test": "npm run jshint && npm run browser-coverage-build && npm run browser-coverage-test && npm run browser-coverage-report && npm run browser-coverage-check",
     "test": "npm run assert-beautified && npm run node-full-test && npm run browser-coverage-full-test",
     "min": "uglifyjs dist/deltadb.js -mc > dist/deltadb.min.js",
-    "build": "mkdir -p dist && browserify index.js -s DeltaDB -o dist/deltadb.js && npm run min"
+    "build": "mkdir -p dist && browserify index.js -s DeltaDB -o dist/deltadb.js && npm run min",
+    "publish": "./bin/publish.sh"
   },
   "dependencies": {
     "bluebird": "^3.0.5",
