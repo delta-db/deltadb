@@ -157,7 +157,8 @@ describe('without-socket', function () {
       return db._localChanges(null, null, limit, n);
     }).then(function (changes) {
       // Make sure changes limited
-      changes.changes.length.should.eql(limit);
+      // changes.changes.length.should.eql(limit); // doesn't work in IE 9
+      (changes.changes.length === limit).should.eql(true);
     });
   });
 
@@ -183,7 +184,8 @@ describe('without-socket', function () {
       return db._localChanges(null, null, limit, n);
     }).then(function (changes) {
       // Make sure changes limited
-      changes.changes.length.should.eql(limit);
+      // changes.changes.length.should.eql(limit); // doesn't work in IE 9
+      (changes.changes.length === limit).should.eql(true);
     });
   });
 
@@ -213,7 +215,8 @@ describe('without-socket', function () {
       return db._findAndEmitAllChangesInBatches();
     }).then(function () {
       // ceil(10/3) = 4
-      timesEmitted.should.eql(4);
+      // timesEmitted.should.eql(4); // doesn't work in IE 9
+      (timesEmitted === 4).should.eql(true);
     });
   });
 
