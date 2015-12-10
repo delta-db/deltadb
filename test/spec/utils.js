@@ -40,7 +40,7 @@ describe('utils', function () {
     return commonUtils.timeout(1000).then(function () {
       var after = new Date();
       var elapsed = after.getTime() - before.getTime();
-      (elapsed >= 1000 && elapsed < 1200).should.eql(true); // allow for 200 ms window
+      (elapsed >= 1000 && elapsed < 1500).should.eql(true); // allow for 500 ms window
     });
   });
 
