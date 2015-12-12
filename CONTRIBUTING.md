@@ -36,7 +36,7 @@ Publishing to npm/bowser
 
 	tin -v VERSION
 	git diff # check that only version changed
-	npm run publish
+	npm run build-and-publish
 
 
 Run all local tests
