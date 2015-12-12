@@ -8,6 +8,7 @@ var Utils = function () {};
 // Long timeout needed for saucelabs tests
 Utils.prototype.TIMEOUT = 20000;
 
+// TODO: move to deltadb-server
 Utils.prototype.changesShouldEql = function (expected, actual) {
   this.sortChanges(actual);
   this.sortChanges(expected);
@@ -27,17 +28,20 @@ Utils.prototype.changesShouldEql = function (expected, actual) {
   this.eqls(expected, actual);
 };
 
+// TODO: move to deltadb-server
 Utils.prototype.sortChanges = function (changes) {
   var attrs = ['col', 'name', 'up', 'seq', 'val'];
-  return utils.sort(changes, attrs);
+  return commonUtils.sort(changes, attrs);
 };
 
+// TODO: move to deltadb-server
 Utils.prototype.eqls = function (expected, actual) {
   // Convert to milliseconds so that errors report specific problems--expect doesn't compare
   // milliseconds by default
   this.toTime(actual).should.eql(this.toTime(expected));
 };
 
+// TODO: move to deltadb-server
 Utils.prototype.toTime = function (rows) {
   rows.forEach(function (cells) {
     for (var j in cells) {
