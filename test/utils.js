@@ -1,7 +1,6 @@
 'use strict';
 
-var utils = require('../scripts/utils'),
-  commonUtils = require('deltadb-common-utils');
+var commonUtils = require('deltadb-common-utils');
 
 var Utils = function () {};
 
