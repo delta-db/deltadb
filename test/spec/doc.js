@@ -171,7 +171,10 @@ describe('doc', function () {
 
   it('should set even if contains id', function () {
     // The id may be present when we work with a copy of the doc's data
-    return task.set({ $id: task.id(), thing: 'sing' });
+    return task.set({
+      $id: task.id(),
+      thing: 'sing'
+    });
   });
 
 });
