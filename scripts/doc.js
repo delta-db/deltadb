@@ -379,7 +379,9 @@ Doc.prototype._set = function (name, value, updated, recorded, untracked) {
   // Set the value before any events are emitted by _change()
   var ret = MemDoc.prototype._set.apply(this, arguments);
 
-  this._emitEvents(events, name);
+  if (events) { // events is falsey when setting the id
+    this._emitEvents(events, name);
+  }
 
   return ret;
 };
