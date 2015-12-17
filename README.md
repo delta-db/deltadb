@@ -7,7 +7,7 @@ DeltaDB is an offline-first database designed to talk directly to clients and wo
 Status
 ---
 
-The core engine is functioning well and demonstrates offline capabilities for creating users, roles, policies, databases, collections and docs. The project is undergoing some refactoring and documentation and examples will be available shortly.
+The core engine is functioning well and demonstrates offline capabilities for creating users, roles, policies, databases, collections and docs. Documentation and examples will be available shortly.
 
 
 Main Principles
@@ -40,11 +40,11 @@ Because it doesn't exist and true support for offline environments needs to be e
 - See [Inspiration](INSPIRATION.md) for more info
 
 
-[Installation (TODO)](https://github.com/delta-db/deltadb-server/blob/master/INSTALL.md)
+[Installation](https://github.com/delta-db/deltadb-server/blob/master/INSTALL.md)
 ---
 
 
-[Examples](https://github.com/delta-db/deltadb/blob/master/EXAMPLES.md)
+[Examples](EXAMPLES.md)
 ---
 
 
