@@ -37,7 +37,7 @@ Because it doesn't exist and true support for offline environments needs to be e
 - PouchDB relies on CouchDB and CouchDB is slow to replicate when there are many revisions and it is not optimized for offline setups like db-per-user
 - Firebase doesn't work offline and is not open source
 - Meteor doesn't work offline
-- See [Inspiration](INSPIRATION.md) for more info
+- See [Inspiration](https://github.com/delta-db/deltadb-server/blob/master/INSPIRATION.md) for more info
 
 
 [Installation](https://github.com/delta-db/deltadb-server/blob/master/INSTALL.md)
