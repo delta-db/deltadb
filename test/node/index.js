@@ -20,9 +20,9 @@ if (global.deltaDBORMNoSQLNoIDB) { // don't use IndexedDB?
 // Set config so that our test server doesn't interfere with any production server. We need to set
 // the config first so that all of the following code uses this config.
 var config = require('../../scripts/config'),
-  testConfig = require('../config');
+  testConfig = require('../config.json');
 for (var i in testConfig) {
-  config[i] = testConfig[i];
+  config.vals[i] = testConfig[i];
 }
 
 require('../spec');

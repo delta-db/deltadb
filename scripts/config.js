@@ -1,14 +1,14 @@
 'use strict';
 
-var Config = function () {};
+var vals = require('./config.json');
 
-Config.prototype.PORT = 8080;
+var Config = function () {
+  this.vals = vals;
+};
 
-Config.prototype.DB_NAME_PREFIX = 'delta_db_';
-
-Config.prototype.SYSTEM_DB_NAME_PREFIX = 'delta_sys_';
-
-// TODO: can we change this to https?
-Config.prototype.URL = 'http://localhost:' + Config.prototype.PORT;
+Config.prototype.url = function () {
+  var url = this.vals.url;
+  return url.scheme + '://' + url.host + (url.port ? ':' + url.port : '');
+};
 
 module.exports = new Config();
