@@ -2,7 +2,7 @@
 
   "dbNamePrefix": "delta_test_",
 
-  "systemDBNamePrefix": "delta_sys_",
+  "systemDBNamePrefix": "delta_test_sys_",
 
   "url": {
     "scheme": "http",
