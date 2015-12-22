@@ -8,16 +8,6 @@
     "scheme": "http",
     "host": "localhost",
     "port": 8090
-  },
-
-  "adapters": {
-
-    "postgres": {
-      "host": "localhost",
-      "username": "postgres",
-      "password": "secret"
-    }
-
   }
 
 }
