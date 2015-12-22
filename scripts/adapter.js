@@ -33,7 +33,7 @@ Adapter.prototype.uuid = function () {
 
 Adapter.prototype._dbStore = function (name, alias) {
   return this._store.db({
-    db: (alias ? alias : config.DB_NAME_PREFIX + name)
+    db: (alias ? alias : config.vals.dbNamePrefix + name)
   });
 };
 

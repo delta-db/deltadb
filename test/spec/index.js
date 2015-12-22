@@ -8,6 +8,7 @@ describe('spec', function () {
 
   require('./adapter');
   require('./client');
+  require('./config');
   require('./db');
   require('./delta-db');
   require('./doc');

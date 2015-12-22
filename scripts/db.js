@@ -31,7 +31,7 @@ var DB = function (name, adapter, url, localOnly, noFilters, username, password,
   this._retryAfterMSecs = 180000;
   this._recorded = false;
   this._sender = new Sender(this);
-  this._url = url ? url : config.URL;
+  this._url = url ? url : config.url();
   this._username = username;
   this._password = password;
   this._hashedPassword = hashedPassword;
@@ -636,7 +636,7 @@ DB.prototype._systemDB = function () {
 
     var opts = {
       db: clientUtils.SYSTEM_DB_NAME,
-      alias: config.SYSTEM_DB_NAME_PREFIX + this._name,
+      alias: config.vals.systemDBNamePrefix + this._name,
       url: this._url,
       local: this._localOnly
     };
