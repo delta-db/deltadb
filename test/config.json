@@ -2,22 +2,12 @@
 
   "dbNamePrefix": "delta_test_",
 
-  "systemDBNamePrefix": "delta_sys_",
+  "systemDBNamePrefix": "delta_test_sys_",
 
   "url": {
     "scheme": "http",
     "host": "localhost",
     "port": 8090
-  },
-
-  "adapters": {
-
-    "postgres": {
-      "host": "localhost",
-      "username": "postgres",
-      "password": "secret"
-    }
-
   }
 
 }
