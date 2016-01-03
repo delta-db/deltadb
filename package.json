@@ -24,7 +24,7 @@
     "beautify": "beautify-proj -i test -o . -c beautify.json -e bundle.js && beautify-proj -i scripts -o . -c beautify.json",
     "jshint": "jshint -c .jshintrc *.js test scripts",
     "node-test": "istanbul test --dir coverage/node ./node_modules/mocha/bin/_mocha test/node/index.js",
-    "node-full-test": "npm run jshint && npm run node-test --coverage",
+    "node-full-test": "npm run jshint && npm run node-test --coverage && istanbul check-coverage --lines 100 --function 100 --statements 100 --branches 100",
     "browser-server": "./test/browser/server.js",
     "browser-test": "./test/browser/test.js",
     "browser-test-firefox": "npm run jshint && CLIENT=selenium:firefox npm run browser-test",
