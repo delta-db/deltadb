@@ -6,6 +6,8 @@ var Sender = function (db) {
   this._db = db;
   this._sending = false;
   this._lastSent = new Date();
+
+  this._retrySender();
 };
 
 Sender.SEND_EVERY_MS = 1000;
@@ -50,6 +52,16 @@ Sender.prototype.send = function () {
     this._sending = true;
     this._sendLoop();
   }
+};
+
+// Use another loop to ensure that deltas are resent
+Sender.prototype._retrySender = function () {
+  var self = this;
+  setTimeout(function () {
+    self.send();
+    self._retrySender();
+  }, self._db._retryAfterMSecs + 100);
+  // Sleep _retryAfterMSecs + 100 so that we send any deltas that need to be retried
 };
 
 module.exports = Sender;
