@@ -15,6 +15,8 @@ describe('spec', function () {
   require('./events');
   require('./multiple');
   require('./persist');
+  require('./sender');
   require('./socket');
   require('./utils');
+
 });
