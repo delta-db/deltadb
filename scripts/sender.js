@@ -32,8 +32,8 @@ Sender.prototype._sendLoop = function () {
       // }).then(function () {
       //   self._sendLoop();
 
-      // TODO: is it better to use setTimout below than another promise as it is won't cause a stack
-      // overflow?
+      // TODO: is it better to use setTimeout below than another promise as it is won't cause a
+      // stack overflow?
       setTimeout(function () {
         self._sendLoop();
       }, Sender.SEND_EVERY_MS);
