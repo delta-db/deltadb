@@ -8,7 +8,11 @@
  * - exposes the model to the template and provides event handlers
  */
 todomvc.controller('TodoCtrl', function TodoCtrl($scope, $location, $timeout) {
-	var db = new DeltaDB('todosdb', 'http://localhost:8080');
+
+	var db = new DeltaDB('todos-db', 'https://delta-dev.deltadb.io');
+
+	// Uncomment to use locally
+	// var db = new DeltaDB('todos-db', 'http://localhost:8090');
 
 	var todos = db.col('todos');
 
