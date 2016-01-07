@@ -61,7 +61,7 @@
     "istanbul": "^0.4.0",
     "jshint": "^2.8.0",
     "mocha": "^2.3.4",
-    "mocha-phantomjs": "^4.0.1",
+    "mocha-phantomjs": "^4.0.2",
     "request": "^2.67.0",
     "sauce-connect-launcher": "^0.14.0",
     "saucelabs": "^1.0.1",
