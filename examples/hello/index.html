@@ -27,7 +27,7 @@
   var greetings = db.col('greetings');
 
   // We use a predefined id of "greeting-id" so that everyone references the same doc
-  var greeting = greetings.doc({ $id: 'thing-id' });
+  var greeting = greetings.doc({ $id: 'greeting-id' });
 
   // Display any locally stored value after it is loaded
   greeting.on('load', function () {
