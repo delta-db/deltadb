@@ -13,12 +13,6 @@ Live Demos
 * [hello](http://codepen.io/redgeoff/pen/vLKYzN?editors=100) - a simple hello world example with code
 
 
-Status
----
-
-The core engine is functioning well and demonstrates offline capabilities for creating users, roles, policies, databases, collections and docs. Documentation and examples will be available shortly.
-
-
 Main Principles
 ---
 
