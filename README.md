@@ -4,6 +4,15 @@
 
 DeltaDB is an offline-first database designed to talk directly to clients and works great offline and online.
 
+
+Live Demos
+---
+
+* [todomvc-angular](http://delta-db.github.io/deltadb/examples/todomvc-angular) - a todo app. For fun, open it in 2 different browser windows and watch the todos change in the 2nd window when you change the todos in the 1st window.
+
+* [hello](http://codepen.io/redgeoff/pen/vLKYzN?editors=100) - a simple hello world example with code
+
+
 Status
 ---
 
