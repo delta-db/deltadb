@@ -39,6 +39,15 @@ Publishing to npm/bowser
 	npm run build-and-publish
 
 
+Updating gh-pages
+---
+
+	git checkout gh-pages
+	git merge master
+	git push
+	git checkout master
+
+
 Run all local tests
 ---
 
