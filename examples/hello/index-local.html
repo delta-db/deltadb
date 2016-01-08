@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <script src="https://cdn.jsdelivr.net/deltadb/0.0.10/deltadb.min.js"></script>
+
+  <!-- Uncomment to use locally
+  <script src="../../dist/deltadb.js"></script>
+  -->
+</head>
+
+<body>
+
+<h1>
+  DeltaDB says <input id="greeting-in" type="text" onkeypress="onKeyPress(event)" />
+</h1>
+
+<h3>
+  DeltaDB says <em id="greeting-out"></em>
+</h3>
+
+<script>
+
+  // Uncomment to use locally
+  var db = new DeltaDB('greetings-db', 'http://localhost:8090');
+
+  var greetings = db.col('greetings');
+
+  // We use a predefined id of "greeting-id" so that everyone references the same doc
+  var greeting = greetings.doc({ $id: 'greeting-id' });
+
+  // Display any locally stored value after it is loaded
+  greeting.on('load', function () {
+    document.getElementById('greeting-out').innerHTML = greeting.get('text');
+  });
+
+  // Display any updates
+  greeting.on('attr:update', function (attr) {
+    document.getElementById('greeting-out').innerHTML = attr.value;
+  });
+
+  // Save after enter is pressed
+  function onKeyPress(e) {
+    if (e.keyCode === 13) { // pressed enter?
+      greeting.set({ text: document.getElementById('greeting-in').value }); // save change
+      document.getElementById('greeting-in').value = ''; // clear input box
+    }
+  }
+</script>
+
+</body>
+
+</html>
