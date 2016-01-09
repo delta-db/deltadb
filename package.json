@@ -53,6 +53,7 @@
     "beautify-proj": "0.0.4",
     "browserify": "^12.0.1",
     "browserify-istanbul": "^0.2.1",
+    "bufferutil": "^1.2.1",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.2.0",
     "coveralls": "^2.11.4",
@@ -66,6 +67,7 @@
     "sauce-connect-launcher": "^0.14.0",
     "saucelabs": "^1.0.1",
     "selenium-standalone": "^4.7.2",
+    "utf-8-validate": "^1.2.1",
     "watchify": "^3.6.1",
     "wd": "^0.4.0"
   }
