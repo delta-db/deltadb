@@ -557,7 +557,7 @@ Doc.prototype._formatChange = function (retryAfter, returnSent, changes, change,
     chng.id = this.id();
     chng.up = change.up.toISOString();
 
-    if (chng.val) { // don't set val if falsy
+    if (typeof chng.val !== 'undefined') { // an undefined value represents a destroy
       chng.val = JSON.stringify(chng.val);
     } else {
       delete chng.val; // save some bandwidth and clear if null
