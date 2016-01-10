@@ -13,6 +13,12 @@ Live Demos
 * [hello](http://codepen.io/redgeoff/pen/vLKYzN?editors=100) - a simple hello world example with code
 
 
+[Getting Started With DeltaDB](https://medium.com/@redgeoff/getting-started-with-deltadb-137359111282#.tciuz7o6b)
+---
+
+Check out the [Getting Started With DeltaDB](https://medium.com/@redgeoff/getting-started-with-deltadb-137359111282#.tciuz7o6b) tutorial
+
+
 Main Principles
 ---
 
