@@ -34,6 +34,8 @@ Building
 Publishing to npm/bowser
 ---
 
+First, make sure that you have previously issued `npm adduser`. Then:
+
 	tin -v VERSION
 	git diff # check that only version changed
 	npm run build-and-publish
