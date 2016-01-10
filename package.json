@@ -1,6 +1,6 @@
 {
   "name": "deltadb",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "DeltaDB offline-first database",
   "main": "index.js",
   "repository": {
