@@ -39,7 +39,9 @@
     "test": "npm run assert-beautified && npm run node-full-test && npm run browser-coverage-full-test",
     "min": "uglifyjs dist/deltadb.js -mc > dist/deltadb.min.js",
     "build": "mkdir -p dist && browserify index.js -s DeltaDB -o dist/deltadb.js && npm run min",
-    "build-and-publish": "./bin/publish.sh"
+    "build-and-publish": "./bin/publish.sh",
+    "link": "npm link ../deltadb-common-utils && npm link ../deltadb-orm-nosql",
+    "unlink": "npm unlink deltadb-common-utils && npm unlink deltadb-orm-nosql && npm install"
   },
   "dependencies": {
     "bluebird": "^3.0.5",
