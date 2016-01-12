@@ -10,7 +10,7 @@ Utils.prototype.IE = global.window && navigator.appName == 'Microsoft Internet E
 if (global.deltaDBSaucelabs && Utils.prototype.IE) { // Saucelabs and IE?
   Utils.prototype.TIMEOUT = 120000;
 } else {
-  Utils.prototype.TIMEOUT = 20000; // ORIGINAL
+  Utils.prototype.TIMEOUT = 20000;
 }
 
 Utils.prototype.sleep = function (sleepMs) {
