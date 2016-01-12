@@ -23,7 +23,7 @@ describe('events', function () {
   var COMMON_TEST_UTILS_WAIT_MS = commonTestUtils.WAIT_MS;
 
   // Testing with IE in Saucelabs can be VERY slow therefore we need to increase the timeouts
-  if (global.deltaDBSaucelabs && Utils.prototype.IE) { // Saucelabs and IE?
+  if (global.deltaDBSaucelabs && testUtils.IE) { // Saucelabs and IE?
     commonTestUtils.WAIT_MS = 60000;
   } else {
     commonTestUtils.WAIT_MS = commonTestUtils.WAIT_MS;
