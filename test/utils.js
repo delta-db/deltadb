@@ -4,7 +4,8 @@ var commonUtils = require('deltadb-common-utils');
 
 var Utils = function () {};
 
-Utils.prototype.IE = global.window && navigator.appName === 'Microsoft Internet Explorer';
+Utils.prototype.IE = global.window && (navigator.appName === 'Microsoft Internet Explorer' ||
+  'ActiveXObject' in window);
 
 // Testing with IE in Saucelabs can be VERY slow therefore we need to increase the timeouts
 if (global.deltaDBSaucelabs && Utils.prototype.IE) { // Saucelabs and IE?
