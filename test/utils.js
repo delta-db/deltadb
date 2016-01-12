@@ -4,8 +4,14 @@ var commonUtils = require('deltadb-common-utils');
 
 var Utils = function () {};
 
-// Long timeout needed for saucelabs tests
-Utils.prototype.TIMEOUT = 20000;
+Utils.prototype.IE = global.window && navigator.appName == 'Microsoft Internet Explorer';
+
+// Testing with IE in Saucelabs can be VERY slow therefore we need to increase the timeouts
+if (global.deltaDBSaucelabs && Utils.prototype.IE) { // Saucelabs and IE?
+  Utils.prototype.TIMEOUT = 120000;
+} else {
+  Utils.prototype.TIMEOUT = 20000; // ORIGINAL
+}
 
 Utils.prototype.sleep = function (sleepMs) {
   // Ensure a different timestamp will be generated after this function resolves.
