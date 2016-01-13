@@ -1,12 +1,6 @@
 Contributing
 ====
 
-Beginning Work on an Issue
----
-	Create branch
-	git clone branch-url
-
-
 Committing Changes
 ---
 [Commit Message Format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit)
