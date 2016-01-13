@@ -49,7 +49,7 @@
     "deltadb-orm-nosql": "0.0.4",
     "events": "^1.1.0",
     "inherits": "^2.0.1",
-    "socket.io-client": "^1.4.3"
+    "socket.io-client": "^1.4.4"
   },
   "devDependencies": {
     "beautify-proj": "0.0.4",
