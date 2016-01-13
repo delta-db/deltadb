@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "beautify-proj": "0.0.4",
-    "browserify": "^12.0.1",
+    "browserify": "^12.0.2",
     "browserify-istanbul": "^0.2.1",
     "bufferutil": "^1.2.1",
     "chai": "^3.4.1",
