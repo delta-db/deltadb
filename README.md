@@ -5,6 +5,15 @@
 DeltaDB is an offline-first database designed to talk directly to clients and works great offline and online.
 
 
+** Update: Suspending Development of DeltaDB **
+---
+
+I have decided to suspend development of DeltaDB for the following reasons:
+* Recent enhancements to both PouchDB and CouchDB have made [PouchDB initial replication much faster](https://medium.com/@redgeoff/is-pouchdb-fast-enough-for-my-app-5e36d28a831f#.o7zmldh1t)
+* After more analysis of the last-write-wins resolution policy, I am left feeling that the last-write-wins resolution policy is mostly good for real-time systems that are always online. In DeltaDB, this last-write-wins policy results in a [Reasonable Ordering](https://github.com/delta-db/deltadb-server/blob/master/NOTES.md#reasonable-ordering). Moreover, the last-write-wins policy is nice when starting a new project as it is automatic, but other conflict resolution policies that force the user to manually resolve the conflict, like CouchDB’s revision protocol, have become more of the standard in the offline-first world.
+* Building a DB that scales and is distributed over many nodes, takes a lot of work. I considered some of the necessary details when initially designing DeltaDB, but have only scratched the surface of what needs to be done. There are other DBs, like CouchDB 2.0, that have nearly solved these problems and CouchDB has been in development since 2005.
+
+
 Live Demos
 ---
 
